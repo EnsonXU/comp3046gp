@@ -12,13 +12,13 @@ void Mat_Show(int row, int col, double *X);
 void Mat_Transpose(int row, int col, double *X, double *Y);
 
 /* add two matrices: Z = X + Y */
-void Mat_Add(int row, int col, float *X, double *Y, double *Z);
+void Mat_Add(int row, int col, double *X, double *Y, double *Z);
 
 /* scalar matrix multiplication: Y = aX where a is a scalar */
-void Mat_aX(int row, int col, float *X, double *Y, double a);
+void Mat_aX(int row, int col, double *X, double *Y, double a);
 
 /* vector matrix multiplication: Y = vX where v is a vector */
-void Mat_vX(int row, int col, float *X, double *Y, double *v);
+void Mat_vX(int row, int col, double *X, double *Y, double *v);
 
 /* matrix vector multiplication: Y = Xv where v is a vector */
 void Mat_Xv(int row, int col, double *X, double *Y, double *v);
