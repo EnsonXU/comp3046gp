@@ -1,74 +1,120 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <math.h>
 #include "matrix.h"
 #include "vector.h"
 
 int main()
 { 
-    double *A, *B; /* A and B */
-	int m, k, n; /*size of A and B*/
-    int i;
+    double *A, *B, *y, *x, *U, *r; /* A and B */
+	int a, b; /*size of A and B*/
+    int i,j,k,n;
     
     //generate A and B with random size
-    int *i_array;
-    
-    i_array = (int*)malloc(3*sizeof(int));
-	if(i_array == NULL)
-		return -1;
-    
     srand( (unsigned)time( NULL ) );
-	for(i = 0; i < 2; i++) {
-		i_array[i] = (int) ((rand() % (9))+ 1);
-	} 
-    m = i_array[0];
-    k = i_array[1];
-    //printf("%d %d %d",m,k,n);
-    
-	A = (double*)malloc(m*k*sizeof(double));
+	a = (int) ((rand() % (9))+ 1);
+
+	A = (double*)malloc(a*a*sizeof(double));
 	if(A == NULL)
 		return -1;
 
-	B = (double*)malloc(k*sizeof(double));
+	B = (double*)malloc(a*sizeof(double));
 	if(B == NULL)
 		return -1;
-        
-	Mat_Init(m, k, A);
-	Vec_Init(k, B);
-    
-	Mat_Show(m, k, A);
-	Vec_Show(k, B);
-    
 
-    // for(j=0; j<=n-1; j++) /* loop for the generation of upper triangular matrix*/
-    // {
-    //     for(i=j+1; i<=n-1; i++)
-    //     {
-    //         if(i>j)
-    //         {
-    //             c=A[i][j]/A[j][j];
-    //             for(k=1; k<=n+1; k++)
-    //             {
-    //                 A[i][k]=A[i][k]-c*A[j][k];
-    //             }
-    //         }
-    //     }
-    // }
-    // x[n]=A[n][n+1]/A[n][n];
-    // /* this loop is for backward substitution*/
-    // for(i=n-1; i>=1; i--)
-    // {
-    //     sum=0;
-    //     for(j=i+1; j<=n; j++)
-    //     {
-    //         sum=sum+A[i][j]*x[j];
-    //     }
-    //     x[i]=(A[i][n+1]-sum)/A[i][i];
-    // }
-    // printf("\nThe solution is: \n");
-    // for(i=1; i<=n; i++)
-    // {
-    //     printf("\nx%d=%f\t",i,x[i]); /* x1, x2, x3 are the required solutions*/
-    // }
+    r = (double*)malloc(a*sizeof(double));
+	if(r == NULL)
+		return -1;
+
+    U = (double*)malloc(a*a*sizeof(double));
+	if(U == NULL)
+		return -1;
+
+    x = (double*)malloc(a*sizeof(double));
+	if(x == NULL)
+		return -1;
+
+    y = (double*)malloc(a*a*sizeof(double));
+	if(y == NULL)
+		return -1;
+        
+	Mat_Init(a, a, A);
+	Vec_Init(a, B);
+    
+	Mat_Show(a, a, A);
+	Vec_Show(a, B);
+    
+    //initialize the U
+    int count=0;
+    for(i=0;i<a;i++)
+    {
+        count=0;
+        for(j=0;j<a;j++)
+        {
+            if(count<i){
+                 U[i*a+j] = 0;
+                 count++;
+            }else{
+                U[i*a+j] = 1;
+            }
+           
+        }
+    }
+
+    //Mat_Show(a, a, U);
+
+   // n-1 = col = row = a
+
+    for(k=0; k<a; k=k+1) 
+    {
+        for(j=k+1; j<a; j++)
+        {
+            A[k+j] = A[k+j] / A[k];
+        }
+        y[k] = B[k] / A[k];
+        A[k] = 0;
+        for(i=k+1; i<a;i++)
+        {
+            for(j=k+1;j<a;j++){
+                A[i*a+j] =  A[i*a+j] -  A[(i-1)*a+j]*A[i*a+j];
+            }
+            B[i] = B[i] - A[i*a+k]*y[k];
+        }
+
+    }
+
+    for(k=b;k>0;k--){
+        x[k] = y[k];
+        for(i=b;i>0;i--){
+            y[i] = y[i]-x[k]*U[i+k*a];
+        }
+    }
+
+    printf("\nThe solution is: \n");
+  // Vec_Show(a, x);
+    printf("vector size = %d\n", a);
+    for (i = 0; i < a; i++)
+        printf("%f ", x[i]);
+        printf("\n");
+
+    for(i=0;i<a;i++)
+    {
+        for(j=0;j<a;j++)
+        {
+            r[i]=0;
+            r[i]=r[i]+A[i*a+j]*x[j];
+        }
+    }
+    for(i=0;i<a;i++)
+    {
+        if(r[i]==fabs(B[i]))
+        {
+            printf("Correct\n");
+        }else{
+            printf("Wrong!!!\n");
+        }
+    }
+    
     return(0);
 }
