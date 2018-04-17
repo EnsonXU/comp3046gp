@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include "matrix.h"
+#include "vector.h"
 
 int main()
 { 
@@ -11,34 +12,33 @@ int main()
     
     //generate A and B with random size
     int *i_array;
-    printf("***");
     
+    i_array = (int*)malloc(3*sizeof(int));
+	if(i_array == NULL)
+		return -1;
     
     srand( (unsigned)time( NULL ) );
-	for(i = 0; i < 3; i++) {
-		i_array[i] = (int) rand()/RAND_MAX * 10;
+	for(i = 0; i < 2; i++) {
+		i_array[i] = (int) ((rand() % (9))+ 1);
 	} 
     m = i_array[0];
     k = i_array[1];
-    n = i_array[2];
-    printf("%d %d %d",m,k,n);
+    //printf("%d %d %d",m,k,n);
     
-    
-    /*
 	A = (double*)malloc(m*k*sizeof(double));
 	if(A == NULL)
 		return -1;
 
-	B = (double*)malloc(k*n*sizeof(double));
+	B = (double*)malloc(k*sizeof(double));
 	if(B == NULL)
 		return -1;
         
 	Mat_Init(m, k, A);
-	Mat_Init(k, n, B);
+	Vec_Init(k, B);
     
 	Mat_Show(m, k, A);
-	Mat_Show(k, n, B);
-    */
+	Vec_Show(k, B);
+    
 
     // for(j=0; j<=n-1; j++) /* loop for the generation of upper triangular matrix*/
     // {

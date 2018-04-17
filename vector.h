@@ -3,24 +3,24 @@
 #define VECTOR_H
 
 /* initialize a vector x */
-void Vec_Init(int size, float *x); 
+void Vec_Init(int size, double *x); 
 
 /* display a vector */
-void Vec_Show(int size, float *x); 
+void Vec_Show(int size, double *x); 
 
 /* return the mean value of the vector components */
-float Vec_Mean(int size, float *x);
+double Vec_Mean(int size, double *x);
 
 /* return the Euclidean norm (or L2 norm, length) of a vector x: ||x|| */
-float Euclidean_Norm(int size, float *x);
+double Euclidean_Norm(int size, double *x);
 
 /* add two vectors */
-void Vec_Add(int size, float *x, float *y, float *z);
+void Vec_Add(int size, double *x, double *y, double *z);
 
 /* Generalized vector addition: y = ax + y */
-void Vec_Axpy(int size, float *x, float *y, float a);
+void Vec_Axpy(int size, double *x, double *y, double a);
 
 /* dot product: return the dot product of vectors x and y */
-float Dot_Product(int size, float *x, float *y);
+double Dot_Product(int size, double *x, double *y);
 
 #endif

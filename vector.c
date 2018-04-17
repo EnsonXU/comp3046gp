@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <stdio.h>
+#include <math.h>
 
 /* initialize a vector x */
 void Vec_Init(int size, double *x)
@@ -65,7 +66,7 @@ void Vec_Axpy(int size, double *x, double *y, double a)
 }
 
 /* dot product: return the dot product of vectors x and y */
-float Dot_Product(int size, double *x, double *y)
+double Dot_Product(int size, double *x, double *y)
 {
     /* Please complete this function */
     int i;
