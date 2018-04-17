@@ -1,22 +1,39 @@
-#include<stdio.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include "matrix.h"
+
 int main()
-{
-    int i,j,k,n;
-    float A[20][20],c,x[10],sum=0.0;
-    printf("\nEnter the order of matrix: ");
-    scanf("%d",&n);
-    printf("\nEnter the elements of augmented matrix row-wise:\n\n");
-    for(i=1; i<=n; i++)
+{ 
+    double *X, *Y, *Z; /* matrices */
+	int m, k, n;
+
+	printf("Please input three positive integers:");
+	scanf("%d%d%d", &m, &k, &n);
+
+	X = (double*)malloc(m*k*sizeof(double));
+	if(X == NULL)
+		return -1;
+
+	Y = (double*)malloc(k*n*sizeof(double));
+	if(Y == NULL)
+		return -1;
+
+	Z = (double*)malloc(m*n*sizeof(double));
+	if(Y == NULL)
+		return -1;
+        
+	Mat_Init(m, k, X);
+	Mat_Init(k, n, Y);
+    
+	Mat_Show(m, k, X);
+	Mat_Show(k, n, Y);
+	Mat_Show(m, n, Z);
+
+
+    for(j=0; j<=n-1; j++) /* loop for the generation of upper triangular matrix*/
     {
-        for(j=1; j<=(n+1); j++)
-        {
-            printf("A[%d][%d] : ", i,j);
-            scanf("%f",&A[i][j]);
-        }
-    }
-    for(j=1; j<=n; j++) /* loop for the generation of upper triangular matrix*/
-    {
-        for(i=1; i<=n; i++)
+        for(i=j+1; i<=n-1; i++)
         {
             if(i>j)
             {
