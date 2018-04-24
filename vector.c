@@ -25,7 +25,6 @@ void Vec_Show(int size, double *x)
     printf("\n");
 }
 
-
 /* return the mean value of the vector components */
 double Vec_Mean(int size, double *x)
 {
@@ -50,7 +49,7 @@ double Euclidean_Norm(int size, double *x)
 }
 
 /* add two vectors */
-void Vec_Add(int size, double *x, double *y, double*z)
+void Vec_Add(int size, double *x, double *y, double *z)
 {
     int i;
     for (i = 0; i < size; i++)
@@ -71,7 +70,8 @@ double Dot_Product(int size, double *x, double *y)
     /* Please complete this function */
     int i;
     double z = 0;
-    for (i = 0; i < size; i++){
+    for (i = 0; i < size; i++)
+    {
         z += x[i] * y[i];
     }
     return z;
