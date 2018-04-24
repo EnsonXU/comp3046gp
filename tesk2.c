@@ -7,8 +7,8 @@
 
 int main()
 {
-    double *A, *B, *y, *x, *U, *r; /* A and B */
-    int a, b;                      /*size of A and B*/
+    double *A, *B, *y, *x, *U, *r, *oA; /* A and B */
+    int a, b;                           /*size of A and B*/
     int i, j, k, n;
 
     //generate A and B with random size
@@ -17,6 +17,10 @@ int main()
 
     A = (double *)malloc(a * a * sizeof(double));
     if (A == NULL)
+        return -1;
+
+    oA = (double *)malloc(a * a * sizeof(double));
+    if (oA == NULL)
         return -1;
 
     B = (double *)malloc(a * sizeof(double));
@@ -35,14 +39,21 @@ int main()
     if (x == NULL)
         return -1;
 
-    y = (double *)malloc(a * a * sizeof(double));
+    y = (double *)malloc(a * sizeof(double));
     if (y == NULL)
         return -1;
 
     Mat_Init(a, a, A);
+
     Vec_Init(a, B);
 
+    for (int q = 0; q < a * a; q++)
+    {
+        oA[q] = A[q];
+    }
+    printf("A:\n");
     Mat_Show(a, a, A);
+    printf("B:\n");
     Vec_Show(a, B);
 
     //initialize the U
@@ -65,16 +76,21 @@ int main()
     }
 
     //Mat_Show(a, a, U);
-
-    // n-1 = col = row = a
+    // n = col = row = a
 
     for (k = 0; k < a; k++)
     {
         for (j = k + 1; j < a; j++)
         {
             A[k * a + j] = A[k * a + j] / A[k + k * a];
+            /*
+            int num = k*a+j;
+            int num2 = k + k * a;
+            printf("%d,%d\n",num,num2);
+            */
         }
         y[k] = B[k] / A[k + k * a];
+        //printf("A now is \n %f, ",A[k + k * a]);
         A[k + k * a] = 1;
         for (i = k + 1; i < a; i++)
         {
@@ -86,30 +102,43 @@ int main()
             A[i * a + k] = 0;
         }
     }
+    printf("y:\n");
+    Vec_Show(a, y);
+    printf("after calculation A:\n");
+    Mat_Show(a, a, A);
 
-    for (k = a; k > 0; k--)
+    for (k = a-1; k >= 0; k--)
     {
         x[k] = y[k];
-        for (i = k - 1; i > 0; i--)
+        for (i = k - 1; i >= 0; i--)
         {
             y[i] = y[i] - x[k] * U[i * a + k];
+            /*
+              int num = i;
+              int num1 = k;
+            int num2 = k + i * a;
+            printf("%d, %d, %d\n",num,num1,num2);
+            */
         }
     }
 
     printf("\nThe solution is: \n");
     Vec_Show(a, x);
+    //Mat_Show(a, a, oA);
+    //Mat_Xv(a, a, oA, r, x);
+
+    for (int p = 0; p < a; p++)
+    {
+        for (int q = 0; q < a; q++)
+        {
+            r[p] += oA[p * a + q] * x[q];
+        }
+    }
+
+    printf("B calculated by A and x is:\n");
+    Vec_Show(a, r);
+    // Mat_Show(a,a,A);
     /*
-    printf("vector size = %d\n", a);
-    for (i = 0; i < a; i++)
-        printf("%f ", x[i]);
-    printf("\n");
-    */
-
-    Mat_Xv(a,a,A,r,x);
-    Vec_Show(a,r);
-   
-
-/*
     for (i = 0; i < a; i++)
     {
         if (r[i] == fabs(B[i]))
