@@ -56,6 +56,7 @@ int main()
     printf("B:\n");
     Vec_Show(a, B);
 
+    /*
     //initialize the U
     int count = 0;
     for (i = 0; i < a; i++)
@@ -74,6 +75,7 @@ int main()
             }
         }
     }
+    */
 
     //Mat_Show(a, a, U);
     // n = col = row = a
@@ -106,13 +108,15 @@ int main()
     Vec_Show(a, y);
     printf("after calculation A:\n");
     Mat_Show(a, a, A);
+    printf("after calculation B:\n");
+    Vec_Show(a, B);
 
-    for (k = a-1; k >= 0; k--)
+    for (k = a - 1; k >= 0; k--)
     {
         x[k] = y[k];
         for (i = k - 1; i >= 0; i--)
         {
-            y[i] = y[i] - x[k] * U[i * a + k];
+            y[i] = y[i] - x[k] * A[i * a + k];
             /*
               int num = i;
               int num1 = k;
